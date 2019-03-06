@@ -7,11 +7,12 @@ from tkinter import *
 import matplotlib
 import seaborn as sns
 from matplotlib import pyplot as plt
-from PIL import Image, ImageTk
 
+# 期权价格窗口
 def BS_command():
     global window
-
+    
+    # 定价函数
     def BlackScholesPrice():
         S = var_s.get()
         K = var_k.get()
@@ -38,9 +39,12 @@ def BS_command():
             result_box.delete(0.0,END)
             result_box.insert(INSERT,'The Type is not correct,try again')
     
+    # 定义新窗口
     BS_window = tk.Toplevel(window)
     BS_window.title('BS价格计算')
     BS_window.geometry('400x400')
+    
+    # Labels
     tk.Label(BS_window, text='现货价格S: ').place(x=10,y=10,anchor='nw')
     tk.Label(BS_window, text='执行价格K: ').place(x=10,y=50,anchor='nw')
     tk.Label(BS_window, text='到期天数T: ').place(x=10,y=90,anchor='nw')
@@ -48,6 +52,7 @@ def BS_command():
     tk.Label(BS_window, text='波动率sigma: ').place(x=10,y=170,anchor='nw')
     tk.Label(BS_window, text='Call or Put: ').place(x=10,y=210,anchor='nw')
 
+    # Entry
     var_s = tk.DoubleVar()
     entry_s = tk.Entry(BS_window, textvariable=var_s)
     entry_s.place(x=120,y=10,anchor='nw')
@@ -72,22 +77,24 @@ def BS_command():
     entry_sigma = tk.Entry(BS_window, textvariable=var_cp)
     entry_sigma.place(x=120,y=210,anchor='nw')
     
-    print(var_s.get)
+    # 定义TextBox输出框
     result_box = tk.Text(BS_window,height=3,width=20)
     result_box.place(x=110,y=320) 
     
+    # 定义Button
     b = tk.Button(BS_window, 
     text='计算欧式期权价格:',      # 显示在按钮上的文字
     width=15, height=2, 
     command=BlackScholesPrice).place(x=120,y=250)
     
-    
+# 隐含波动率窗口
 def Newton_commant():
     global window
     global image
     global im
     image = None
     im = None
+    # 隐含波动率计算函数
     def GetImpliedV():
         S = var_s.get()
         K = var_k.get()
@@ -95,21 +102,16 @@ def Newton_commant():
         r = var_r.get()
         Price = var_price.get()
         option_type = var_cp.get()
-        
-
-        
         GetTheIVPlot(S,K,T,r,Price,option_type)
         #canvas.create_image(100, 200, image=i, anchor=tk.NW)
         global image
         global im
         image = Image.open("Temp.png")  
         im = ImageTk.PhotoImage(image)  
-  
-        
+
         theimage = canvas.create_image(0,0,image=im,anchor=tk.NW)
      
         result_box.delete(0.0,END)
-
         implied_v = 0.5
         implied_v_update = 0
         delta_iv = 1e-5
@@ -127,7 +129,8 @@ def Newton_commant():
                 result_box.insert(INSERT,"The max iter_nums have been limited\n")
                 break
         result_box.insert(INSERT,str(implied_v_update)) 
-
+    
+    # 期权价格计算函数
     def BlackScholesPrice(S,K,T,sigma,r,option_type):
         if option_type == 'call':
             d1 = ( np.log(S/K) + (r + np.power(sigma,2)/2) * T ) / ( sigma * np.sqrt(T))
@@ -141,7 +144,8 @@ def Newton_commant():
             return Price
         else:
             print('The type is not correct,try again!')
-            
+    
+    # 隐含波动率快速计算
     def GetImpliedVFast(S,K,T,r,Price,option_type):
         implied_v = 0.5
         implied_v_update = 0
@@ -161,6 +165,7 @@ def Newton_commant():
                 break
         return implied_v_update
     
+    # 作图函数
     def GetTheIVPlot(S,K,T,r,Price,option_type):
   
         KList = []
@@ -176,14 +181,11 @@ def Newton_commant():
         plt.scatter(K,GetImpliedVFast(S,K,T,r,Price,option_type),color='r')
         plt.yticks(fontsize=3.3)
         plt.savefig('Temp.png',dpi=200)
-        
-            
+                   
     Newton_window = tk.Toplevel(window)
     Newton_window.title('牛顿法IV计算')
     Newton_window.geometry('800x400')
 
-
-    
     tk.Label(Newton_window, text='现货价格S: ').place(x=10,y=10,anchor='nw')
     tk.Label(Newton_window, text='执行价格K: ').place(x=10,y=50,anchor='nw')
     tk.Label(Newton_window, text='到期天数T: ').place(x=10,y=90,anchor='nw')
@@ -228,7 +230,8 @@ def Newton_commant():
     text='牛顿法计算隐含波动率:',      # 显示在按钮上的文字
     width=20, height=2, 
     command=GetImpliedV).place(x=110,y=250)
-    
+
+# main函数 定义主窗口内容
 def main():
     global window
     window = tk.Tk()
@@ -261,7 +264,6 @@ def main():
                   font=('微软雅黑', 12),     # 字体和字体大小
                   width=50, height=2  # 标签长宽
                   )
-
     l1.pack()
     l2.pack()
     l3.pack()
@@ -276,6 +278,7 @@ def main():
     window.config(menu=menubar)
     window.mainloop()
 
+# 入口
 if __name__ == "__main__":
     global window
     main()
