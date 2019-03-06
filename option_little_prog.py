@@ -10,7 +10,7 @@ from matplotlib import pyplot as plt
 from PIL import Image, ImageTk
 
 def BS_command():
-    
+    global window
 
     def BlackScholesPrice():
         S = var_s.get()
@@ -83,6 +83,7 @@ def BS_command():
     
     
 def Newton_commant():
+    global window
     global image
     global im
     image = None
@@ -229,50 +230,52 @@ def Newton_commant():
     command=GetImpliedV).place(x=110,y=250)
     
 def main():
-	window = tk.Tk()
-	window.title('期权计算器')
-	window.geometry('400x400')
+    global window
+    window = tk.Tk()
+    window.title('期权计算器')
+    window.geometry('400x400')
 
-	l1 = tk.Label(window, 
-		text='期权计算器 v2.0',    
-		font=('微软雅黑', 18),     # 字体和字体大小
-		width=15, height=2  # 标签长宽
-		)
+    l1 = tk.Label(window, 
+                  text='期权计算器 v2.0',    
+                  font=('微软雅黑', 18),     # 字体和字体大小
+                  width=15, height=2  # 标签长宽
+                  )
 
-	l2 = tk.Label(window, 
-		text='主要功能：',
-		font=('微软雅黑', 12),     # 字体和字体大小
-		width=50, height=2  # 标签长宽
-		)
-	l3 = tk.Label(window, 
-		text='1.利用BS公式计算欧式期权价格',
-		font=('微软雅黑', 12),     # 字体和字体大小
-		width=50, height=2  # 标签长宽
-		)
-	l4 = tk.Label(window, 
-		text='2.利用BS公式反推期权隐含波动率（牛顿）',
-		font=('微软雅黑', 12),     # 字体和字体大小
-		width=50, height=2  # 标签长宽
-		)
-	l5 = tk.Label(window, 
-		text='作者：Kang',
-		font=('微软雅黑', 12),     # 字体和字体大小
-		width=50, height=2  # 标签长宽
-		)
+    l2 = tk.Label(window, 
+                  text='主要功能：',
+                  font=('微软雅黑', 12),     # 字体和字体大小
+                  width=50, height=2  # 标签长宽
+                  )
+    l3 = tk.Label(window, 
+                  text='1.利用BS公式计算欧式期权价格',
+                  font=('微软雅黑', 12),     # 字体和字体大小
+                  width=50, height=2  # 标签长宽
+                  )
+    l4 = tk.Label(window, 
+                  text='2.利用BS公式反推期权隐含波动率（牛顿）',
+                  font=('微软雅黑', 12),     # 字体和字体大小
+                  width=50, height=2  # 标签长宽
+                  )
+    l5 = tk.Label(window, 
+                  text='作者：Kang',
+                  font=('微软雅黑', 12),     # 字体和字体大小
+                  width=50, height=2  # 标签长宽
+                  )
 
-	l1.pack()
-	l2.pack()
-	l3.pack()
-	l4.pack()
-	l5.pack()
+    l1.pack()
+    l2.pack()
+    l3.pack()
+    l4.pack()
+    l5.pack()
 
-	menubar = tk.Menu(window)
-	filemenu = tk.Menu(menubar, tearoff=0)
-	menubar.add_cascade(label='功能', menu=filemenu)
-	filemenu.add_command(label='BS价格', command=BS_command)
-	filemenu.add_command(label='牛顿IV', command=Newton_commant)
-	window.config(menu=menubar)
-	window.mainloop()
+    menubar = tk.Menu(window)
+    filemenu = tk.Menu(menubar, tearoff=0)
+    menubar.add_cascade(label='功能', menu=filemenu)
+    filemenu.add_command(label='BS价格', command=BS_command)
+    filemenu.add_command(label='牛顿IV', command=Newton_commant)
+    window.config(menu=menubar)
+    window.mainloop()
 
 if __name__ == "__main__":
-	main()
+    global window
+    main()
