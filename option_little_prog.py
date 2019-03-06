@@ -223,9 +223,6 @@ def Newton_commant():
     canvas  = tk.Canvas(Newton_window, width=400, height=400)
     canvas.place(x=400,y=0,anchor='nw')
    
-    
-    
-    
     b = tk.Button(Newton_window, 
     text='牛顿法计算隐含波动率:',      # 显示在按钮上的文字
     width=20, height=2, 
